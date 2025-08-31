@@ -16,7 +16,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final _passwordController = TextEditingController();
   String _selectedRole = 'vet';
 
-  final List<String> _roles = ['vet', 'admin', 'staff', 'manager'];
+  final List<String> _roles = [ 'admin', 'staff'];
 
   @override
   Widget build(BuildContext context) {

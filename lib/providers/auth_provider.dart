@@ -90,7 +90,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       _user = null;
       final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('vet_insurance_user');
+      await prefs.remove('Safe Pastures Admin');
       notifyListeners();
     } catch (e) {
       debugPrint('Error during logout: $e');
