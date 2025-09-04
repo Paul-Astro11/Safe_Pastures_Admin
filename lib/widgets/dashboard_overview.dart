@@ -33,7 +33,7 @@ class Application {
 
 class Claim {
   final String id;
-  final String petName;
+  final String AnimalName;
   final String owner;
   final String amount;
   final String type;
@@ -41,7 +41,7 @@ class Claim {
 
   Claim({
     required this.id,
-    required this.petName,
+    required this.AnimalName,
     required this.owner,
     required this.amount,
     required this.type,
@@ -55,21 +55,21 @@ class DashboardOverview extends StatelessWidget {
   List<StatCard> get stats => [
     StatCard(name: 'Total Applications', value: '247', change: '+12%', icon: Icons.description),
     StatCard(name: 'Pending Claims', value: '18', change: '-5%', icon: Icons.assignment),
-    StatCard(name: 'Monthly Payments', value: '\$45,231', change: '+8%', icon: Icons.payment),
+    StatCard(name: 'Monthly Payments', value: '\R45,231', change: '+8%', icon: Icons.payment),
     StatCard(name: 'Active Vets', value: '89', change: '+3%', icon: Icons.people),
   ];
 
   List<Application> get recentApplications => [
     Application(
       id: 'APP-001',
-      vetName: 'Dr. Sarah Johnson',
+      vetName: 'Dr. Sarah Banda',
       clinic: 'Paws & Claws Veterinary',
       status: 'pending',
       submittedAt: '2 hours ago',
     ),
     Application(
       id: 'APP-002',
-      vetName: 'Dr. Michael Chen',
+      vetName: 'Dr. Michael Chanda',
       clinic: 'City Animal Hospital',
       status: 'approved',
       submittedAt: '4 hours ago',
@@ -86,25 +86,25 @@ class DashboardOverview extends StatelessWidget {
   List<Claim> get pendingClaims => [
     Claim(
       id: 'CLM-001',
-      petName: 'Max',
-      owner: 'John Smith',
-      amount: '\$1,250',
+      AnimalName: 'Cattle',
+      owner: 'Wilson Zulu',
+      amount: '\R1,250',
       type: 'Surgery',
       status: 'review',
     ),
     Claim(
       id: 'CLM-002',
-      petName: 'Luna',
-      owner: 'Maria Garcia',
-      amount: '\$450',
+      AnimalName: 'Pig',
+      owner: 'Maria lungu',
+      amount: '\R450',
       type: 'Medication',
       status: 'pending',
     ),
     Claim(
       id: 'CLM-003',
-      petName: 'Charlie',
-      owner: 'David Wilson',
-      amount: '\$890',
+      AnimalName: 'Goat',
+      owner: 'David Mwansa',
+      amount: '\R890',
       type: 'Emergency',
       status: 'approved',
     ),
@@ -336,7 +336,7 @@ class DashboardOverview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${claim.petName} - ${claim.owner}',
+                  '${claim.AnimalName} - ${claim.owner}',
                   style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
                 Text(

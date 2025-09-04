@@ -14,7 +14,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  String _selectedRole = 'vet';
+  String _selectedRole = 'admin';
 
   final List<String> _roles = [ 'admin', 'manager', 'vet','staff'];
 
@@ -131,7 +131,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             });
                           },
                           child: Text(
-                            _isLogin 
+                            _isLogin
                               ? "Don't have an account? Sign up"
                               : "Already have an account? Sign in",
                           ),

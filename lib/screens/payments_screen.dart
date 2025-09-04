@@ -8,51 +8,51 @@ class PaymentsScreen extends StatefulWidget {
 }
 
 class _PaymentsScreenState extends State<PaymentsScreen> {
-  String selectedPeriod = 'This Month';
+  String selectedPeriod = 'This Week';
   final List<String> periods = ['This Week', 'This Month', 'Last Month', 'This Year'];
 
   final List<Map<String, dynamic>> payments = [
     {
-      'id': 'PAY-2024-001',
+      'id': 'PAY-2025-001',
       'type': 'Premium Payment',
-      'customerName': 'Sarah Johnson',
-      'petName': 'Buddy',
-      'amount': '\$89.99',
+      'customerName': 'Sarah Banda',
+      'AnimalName': 'Cattle',
+      'amount': '\R89.99',
       'status': 'Completed',
-      'date': '2024-01-17',
+      'date': '2025-10-11',
       'method': 'Credit Card',
       'reference': '****1234',
     },
     {
-      'id': 'PAY-2024-002',
+      'id': 'PAY-2025-002',
       'type': 'Claim Payout',
-      'customerName': 'Mike Chen',
-      'petName': 'Whiskers',
-      'amount': '\$385.50',
+      'customerName': 'Mike Chanda',
+      'AnimalName': 'Pig',
+      'amount': '\R385.50',
       'status': 'Processing',
-      'date': '2024-01-16',
+      'date': '2025-10-16',
       'method': 'Bank Transfer',
       'reference': 'ACH-789456',
     },
     {
-      'id': 'PAY-2024-003',
+      'id': 'PAY-2025-003',
       'type': 'Premium Payment',
       'customerName': 'Emma Davis',
-      'petName': 'Luna',
+      'AnimalName': 'Goat',
       'amount': '\$75.25',
       'status': 'Failed',
-      'date': '2024-01-15',
+      'date': '2025-10-15',
       'method': 'Credit Card',
       'reference': '****5678',
     },
     {
-      'id': 'PAY-2024-004',
+      'id': 'PAY-2025-004',
       'type': 'Refund',
-      'customerName': 'Robert Wilson',
-      'petName': 'Max',
-      'amount': '\$95.00',
+      'customerName': 'Wilson Tembo',
+      'AnimalName': 'Sheep',
+      'amount': '\R95.00',
       'status': 'Pending',
-      'date': '2024-01-14',
+      'date': '2025-10-14',
       'method': 'Original Payment Method',
       'reference': 'REF-123789',
     },
@@ -114,9 +114,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _buildFinancialCard('Total Revenue', '\$45,230', '+12.5%', Colors.green, Icons.trending_up),
-                  _buildFinancialCard('Pending Payouts', '\$8,450', '15 claims', Colors.orange, Icons.hourglass_empty),
-                  _buildFinancialCard('Failed Payments', '\$1,250', '3 transactions', Colors.red, Icons.error),
+                  _buildFinancialCard('Total Revenue', '\R45,230', '+12.5%', Colors.green, Icons.trending_up),
+                  _buildFinancialCard('Pending Payouts', '\R8,450', '15 claims', Colors.orange, Icons.hourglass_empty),
+                  _buildFinancialCard('Failed Payments', '\R1,250', '3 transactions', Colors.red, Icons.error),
                   _buildFinancialCard('Monthly Growth', '+18.2%', 'vs last month', Colors.blue, Icons.show_chart),
                 ],
               ),
@@ -173,7 +173,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('${payment['customerName']} - ${payment['petName']}'),
+                          Text('${payment['customerName']} - ${payment['AnimalName']}'),
                           Text('Payment ID: ${payment['id']}'),
                           Text('${payment['method']} • ${payment['reference']}'),
                           const SizedBox(height: 8),

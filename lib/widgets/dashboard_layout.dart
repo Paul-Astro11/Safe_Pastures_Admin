@@ -180,7 +180,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                 Icon(Icons.shield, color: theme.colorScheme.primary, size: 32),
                 const SizedBox(width: 8),
                 Text(
-                  'VetInsure Pro',
+                  'Safe Pastures',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -217,7 +217,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                 Icon(Icons.shield, color: theme.colorScheme.primary, size: 32),
                 const SizedBox(width: 8),
                 Text(
-                  'VetInsure Pro',
+                  'Safe Pastures',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
