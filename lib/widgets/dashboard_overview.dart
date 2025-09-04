@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safe_pastures_admin/screens/applications_screen.dart';
 
 class StatCard {
   final String name;
@@ -140,7 +141,7 @@ class DashboardOverview extends StatelessWidget {
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 24,
                   mainAxisSpacing: 24,
-                  childAspectRatio: 1.5,
+                  childAspectRatio: 3.0,
                 ),
                 itemCount: stats.length,
                 itemBuilder: (context, index) => _buildStatCard(context, stats[index]),
@@ -248,13 +249,7 @@ class DashboardOverview extends StatelessWidget {
             const SizedBox(height: 16),
             ...recentApplications.map((app) => _buildApplicationItem(context, app)),
             const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => context.go('/applications'),
-                child: const Text('View All Applications'),
-              ),
-            ),
+
           ],
         ),
       ),
@@ -280,13 +275,6 @@ class DashboardOverview extends StatelessWidget {
             const SizedBox(height: 16),
             ...pendingClaims.map((claim) => _buildClaimItem(context, claim)),
             const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => context.go('/claims'),
-                child: const Text('View All Claims'),
-              ),
-            ),
           ],
         ),
       ),

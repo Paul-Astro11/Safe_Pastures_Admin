@@ -115,7 +115,7 @@ class _AdminScreenState extends State<AdminScreen> {
 
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.green.withOpacity(0.1), Colors.blue.withOpacity(0.1)],
@@ -165,7 +165,7 @@ class _AdminScreenState extends State<AdminScreen> {
                               crossAxisCount: 2,
                               crossAxisSpacing: 12,
                               mainAxisSpacing: 12,
-                              childAspectRatio: 1.2,
+                              childAspectRatio: 3.6,
                             ),
                             itemCount: adminSections.length,
                             itemBuilder: (context, index) {
@@ -175,7 +175,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                   onTap: () {},
                                   borderRadius: BorderRadius.circular(8),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(16),
+                                    padding: const EdgeInsets.all(8),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [

@@ -3,12 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Professional veterinary color scheme
-  static const Color primaryColor = Color(0xFF1D4ED8); // Dark gray/black
+  static const Color primaryColor = Color(0xFF1A1A1A); // Dark gray/black
   static const Color secondaryColor = Color(0xFF8B5CF6); // Purple accent
-  static const Color backgroundColor = Color(0xFFE5E7EB);
-  static const Color cardColor = Color(0xFFF8F9FA);
-  static const Color borderColor = Color(0xFFE5E7EB);
-  static const Color mutedColor = Color(0xFF6B7280);
+  static const Color backgroundColor = Color(0xFFE3F2FD);
+  static const Color cardColor = Color(0xFFFFFFFF);
+  static const Color borderColor = Color(0xFFB3B3B3);
+  static const Color mutedColor = Color(0xFF1A1A1A);
 
   
   static ThemeData lightTheme = ThemeData(

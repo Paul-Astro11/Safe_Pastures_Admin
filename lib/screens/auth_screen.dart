@@ -10,18 +10,12 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  bool _isLogin = true;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  String _selectedRole = 'admin';
-
-  final List<String> _roles = [ 'admin', 'manager', 'vet','staff'];
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -47,23 +41,26 @@ class _AuthScreenState extends State<AuthScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Logo
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // 🔹 Logo
                             Image.asset(
-                              'assets/logo.png', // <-- your logo path
+                              'assets/logo.png', // Replace with your logo path
                               height: 80,
                             ),
-                            const SizedBox(height: 12),
                           ],
                         ),
                         const SizedBox(height: 32),
-                        Text(
-                          _isLogin ? 'Safe Pastures' : 'Safe Pastures',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+
+                        // Title
+                        const Text(
+                          'Safe Pastures',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 24),
+
+                        // Email Field
                         TextFormField(
                           controller: _emailController,
                           decoration: const InputDecoration(
@@ -81,6 +78,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           },
                         ),
                         const SizedBox(height: 16),
+
+                        // Password Field
                         TextFormField(
                           controller: _passwordController,
                           decoration: const InputDecoration(
@@ -98,44 +97,21 @@ class _AuthScreenState extends State<AuthScreen> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 16),
-                        DropdownButtonFormField<String>(
-                          value: _selectedRole,
-                          decoration: const InputDecoration(
-                            labelText: 'Role',
-                            border: OutlineInputBorder(),
-                          ),
-                          items: _roles.map((role) => DropdownMenuItem(
-                            value: role,
-                            child: Text(role[0].toUpperCase() + role.substring(1)),
-                          )).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedRole = value!;
-                            });
-                          },
-                        ),
                         const SizedBox(height: 24),
+
+                        // Login Button
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: _handleSubmit,
-                            child: Text(_isLogin ? 'Sign In' : 'Sign Up'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue[900], // ✅ Dark blue background
+                              foregroundColor: Colors.white,     // ✅ White text
+                            ),
+                            child: const Text('Sign In'),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isLogin = !_isLogin;
-                            });
-                          },
-                          child: Text(
-                            _isLogin
-                              ? "Don't have an account? Sign up"
-                              : "Already have an account? Sign in",
-                          ),
-                        ),
+
                       ],
                     ),
                   ),
@@ -150,7 +126,10 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _handleSubmit() {
     if (_formKey.currentState!.validate()) {
-      context.read<AuthProvider>().login(_emailController.text, _selectedRole);
+      context.read<AuthProvider>().login(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
     }
   }
 

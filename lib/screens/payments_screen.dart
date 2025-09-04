@@ -39,7 +39,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
       'type': 'Premium Payment',
       'customerName': 'Emma Davis',
       'AnimalName': 'Goat',
-      'amount': '\$75.25',
+      'amount': '\R75.25',
       'status': 'Failed',
       'date': '2025-10-15',
       'method': 'Credit Card',
@@ -110,7 +110,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             const SizedBox(height: 16),
 
             SizedBox(
-              height: 150,
+              height: 110,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [

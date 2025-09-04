@@ -81,9 +81,9 @@
     },
     {
       "name": "flutter_svg",
-      "rootUri": "file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_svg-2.2.0",
+      "rootUri": "file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_svg-2.2.1",
       "packageUri": "lib/",
-      "languageVersion": "3.6"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_test",
