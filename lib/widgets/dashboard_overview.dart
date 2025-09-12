@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:safe_pastures_admin/screens/applications_screen.dart';
 
 class StatCard {
   final String name;
@@ -34,7 +32,7 @@ class Application {
 
 class Claim {
   final String id;
-  final String AnimalName;
+  final String animalName;
   final String owner;
   final String amount;
   final String type;
@@ -42,7 +40,7 @@ class Claim {
 
   Claim({
     required this.id,
-    required this.AnimalName,
+    required this.animalName,
     required this.owner,
     required this.amount,
     required this.type,
@@ -56,126 +54,97 @@ class DashboardOverview extends StatelessWidget {
   List<StatCard> get stats => [
     StatCard(name: 'Total Applications', value: '247', change: '+12%', icon: Icons.description),
     StatCard(name: 'Pending Claims', value: '18', change: '-5%', icon: Icons.assignment),
-    StatCard(name: 'Monthly Payments', value: '\R45,231', change: '+8%', icon: Icons.payment),
+    StatCard(name: 'Monthly Payments', value: 'R45,231', change: '+8%', icon: Icons.payment),
     StatCard(name: 'Active Vets', value: '89', change: '+3%', icon: Icons.people),
   ];
 
   List<Application> get recentApplications => [
-    Application(
-      id: 'APP-001',
-      vetName: 'Dr. Sarah Banda',
-      clinic: 'Paws & Claws Veterinary',
-      status: 'pending',
-      submittedAt: '2 hours ago',
-    ),
-    Application(
-      id: 'APP-002',
-      vetName: 'Dr. Michael Chanda',
-      clinic: 'City Animal Hospital',
-      status: 'approved',
-      submittedAt: '4 hours ago',
-    ),
-    Application(
-      id: 'APP-003',
-      vetName: 'Dr. Emily Rodriguez',
-      clinic: 'Westside Pet Care',
-      status: 'review',
-      submittedAt: '6 hours ago',
-    ),
+    Application(id: 'APP-001', vetName: 'Dr. Sarah Banda', clinic: 'Paws & Claws Veterinary', status: 'pending', submittedAt: '2 hours ago'),
+    Application(id: 'APP-002', vetName: 'Dr. Michael Chanda', clinic: 'City Animal Hospital', status: 'approved', submittedAt: '4 hours ago'),
+    Application(id: 'APP-003', vetName: 'Dr. Emily Rodriguez', clinic: 'Westside Pet Care', status: 'review', submittedAt: '6 hours ago'),
   ];
 
   List<Claim> get pendingClaims => [
-    Claim(
-      id: 'CLM-001',
-      AnimalName: 'Cattle',
-      owner: 'Wilson Zulu',
-      amount: '\R1,250',
-      type: 'Surgery',
-      status: 'review',
-    ),
-    Claim(
-      id: 'CLM-002',
-      AnimalName: 'Pig',
-      owner: 'Maria lungu',
-      amount: '\R450',
-      type: 'Medication',
-      status: 'pending',
-    ),
-    Claim(
-      id: 'CLM-003',
-      AnimalName: 'Goat',
-      owner: 'David Mwansa',
-      amount: '\R890',
-      type: 'Emergency',
-      status: 'approved',
-    ),
+    Claim(id: 'CLM-001', animalName: 'Cattle', owner: 'Wilson Zulu', amount: 'R1,250', type: 'Surgery', status: 'review'),
+    Claim(id: 'CLM-002', animalName: 'Pig', owner: 'Maria Lungu', amount: 'R450', type: 'Medication', status: 'pending'),
+    Claim(id: 'CLM-003', animalName: 'Goat', owner: 'David Mwansa', amount: 'R890', type: 'Emergency', status: 'approved'),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          const Text(
-            'Dashboard Overview',
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Monitor your veterinary insurance operations and key metrics',
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-          ),
-          const SizedBox(height: 32),
+    return LayoutBuilder(builder: (context, constraints) {
+      final isDesktop = constraints.maxWidth > 1024;
+      final isTablet = constraints.maxWidth > 800 && constraints.maxWidth <= 1024;
 
-          // Stats Grid
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final crossAxisCount = constraints.maxWidth > 1200 ? 4 :
-                                   constraints.maxWidth > 800 ? 2 : 1;
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 24,
-                  mainAxisSpacing: 24,
-                  childAspectRatio: 3.0,
-                ),
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            const Text(
+              'Dashboard Overview',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Monitor your veterinary insurance operations and key metrics',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+            ),
+            const SizedBox(height: 32),
+
+            // 🔹 Stats - horizontally scrollable
+            SizedBox(
+              height: 150,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
                 itemCount: stats.length,
-                itemBuilder: (context, index) => _buildStatCard(context, stats[index]),
-              );
-            },
-          ),
-          const SizedBox(height: 32),
+                separatorBuilder: (_, __) => const SizedBox(width: 16),
+                itemBuilder: (context, index) => SizedBox(
+                  width: 250,
+                  child: _buildStatCard(context, stats[index]),
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
 
-          // Recent Activity
-          LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 1024) {
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: _buildRecentApplications(context)),
-                    const SizedBox(width: 24),
-                    Expanded(child: _buildPendingClaims(context)),
-                  ],
-                );
-              } else {
-                return Column(
-                  children: [
-                    _buildRecentApplications(context),
-                    const SizedBox(height: 24),
-                    _buildPendingClaims(context),
-                  ],
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
+            // Recent Applications & Pending Claims
+            isDesktop
+                ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _flexibleCard(_buildRecentApplications(context)),
+                ),
+                const SizedBox(width: 24),
+                Expanded(
+                  child: _flexibleCard(_buildPendingClaims(context)),
+                ),
+              ],
+            )
+                : Column(
+              children: [
+                _flexibleCard(_buildRecentApplications(context)),
+                const SizedBox(height: 24),
+                _flexibleCard(_buildPendingClaims(context)),
+              ],
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  // Make card expand and scrollable dynamically
+  Widget _flexibleCard(Widget card) {
+    return LayoutBuilder(builder: (context, constraints) {
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: constraints.maxHeight > 0 ? constraints.maxHeight : double.infinity,
+        ),
+        child: SingleChildScrollView(child: card),
+      );
+    });
   }
 
   Widget _buildStatCard(BuildContext context, StatCard stat) {
@@ -190,38 +159,20 @@ class DashboardOverview extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  stat.name,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
+                Text(stat.name, style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
                 Icon(stat.icon, color: theme.colorScheme.onSurfaceVariant),
               ],
             ),
             const Spacer(),
-            Text(
-              stat.value,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+            Text(stat.value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 4),
             Row(
               children: [
                 Icon(Icons.trending_up, size: 12, color: Colors.green[600]),
                 const SizedBox(width: 4),
-                Text(
-                  stat.change,
-                  style: TextStyle(fontSize: 12, color: Colors.green[600]),
-                ),
+                Text(stat.change, style: TextStyle(fontSize: 12, color: Colors.green[600])),
                 const SizedBox(width: 4),
-                Text(
-                  'from last month',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
+                Text('from last month', style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurfaceVariant)),
               ],
             ),
           ],
@@ -237,19 +188,11 @@ class DashboardOverview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Recent Applications',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
+            const Text('Recent Applications', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             const SizedBox(height: 4),
-            Text(
-              'Latest veterinary insurance applications submitted',
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-            ),
+            Text('Latest veterinary insurance applications submitted', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
             const SizedBox(height: 16),
             ...recentApplications.map((app) => _buildApplicationItem(context, app)),
-            const SizedBox(height: 16),
-
           ],
         ),
       ),
@@ -263,18 +206,11 @@ class DashboardOverview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Pending Claims',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
+            const Text('Pending Claims', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             const SizedBox(height: 4),
-            Text(
-              'Claims requiring review or processing',
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-            ),
+            Text('Claims requiring review or processing', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
             const SizedBox(height: 16),
             ...pendingClaims.map((claim) => _buildClaimItem(context, claim)),
-            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -291,20 +227,8 @@ class DashboardOverview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(app.vetName, style: const TextStyle(fontWeight: FontWeight.w500)),
-                Text(
-                  app.clinic,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                Text(
-                  app.submittedAt,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
+                Text(app.clinic, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                Text(app.submittedAt, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant)),
               ],
             ),
           ),
@@ -323,21 +247,9 @@ class DashboardOverview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${claim.AnimalName} - ${claim.owner}',
-                  style: const TextStyle(fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  claim.type,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                Text(
-                  claim.amount,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                ),
+                Text('${claim.animalName} - ${claim.owner}', style: const TextStyle(fontWeight: FontWeight.w500)),
+                Text(claim.type, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                Text(claim.amount, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
               ],
             ),
           ),
@@ -376,19 +288,13 @@ class DashboardOverview extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 12, color: textColor),
           const SizedBox(width: 4),
-          Text(
-            status[0].toUpperCase() + status.substring(1),
-            style: TextStyle(fontSize: 12, color: textColor, fontWeight: FontWeight.w500),
-          ),
+          Text(status[0].toUpperCase() + status.substring(1), style: TextStyle(fontSize: 12, color: textColor, fontWeight: FontWeight.w500)),
         ],
       ),
     );

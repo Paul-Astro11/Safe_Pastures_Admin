@@ -17,7 +17,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
       'AnimalName': 'Cattle',
       'ownerName': 'Sarah Banda',
       'condition': 'Hip Dysplasia Surgery',
-      'claimAmount': '\R2,450.00',
+      'claimAmount': '2450.00',
       'status': 'Pending',
       'submittedDate': '2025-10-16',
       'vetClinic': 'City Animal Hospital',
@@ -28,7 +28,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
       'AnimalName': 'Goat',
       'ownerName': 'Mike Chanda',
       'condition': 'Dental Cleaning',
-      'claimAmount': '\R385.50',
+      'claimAmount': '385.50',
       'status': 'Approved',
       'submittedDate': '2025-10-15',
       'vetClinic': 'Pet Care Center',
@@ -39,7 +39,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
       'AnimalName': 'Pig',
       'ownerName': 'Emma Davis',
       'condition': 'Emergency Visit - Poisoning',
-      'claimAmount': '\R1,200.00',
+      'claimAmount': '1200.00',
       'status': 'Active',
       'submittedDate': '2025-10-11',
       'vetClinic': 'Emergency Pet Hospital',
@@ -50,7 +50,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
       'AnimalName': 'Sheep',
       'ownerName': 'David Zulu',
       'condition': 'Routine Checkup',
-      'claimAmount': '\R125.00',
+      'claimAmount': '125.00',
       'status': 'Denied',
       'submittedDate': '2024-01-10',
       'vetClinic': 'Neighborhood Vet',
@@ -86,11 +86,72 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
     }
   }
 
+  void _viewClaim(Map<String, dynamic> claim) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text("Claim Details: ${claim['id']}"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Animal: ${claim['AnimalName']}"),
+            Text("Owner: ${claim['ownerName']}"),
+            Text("Condition: ${claim['condition']}"),
+            Text("Amount: R${claim['claimAmount']}"),
+            Text("Clinic: ${claim['vetClinic']}"),
+            Text("Submitted: ${claim['submittedDate']}"),
+            Text("Status: ${claim['status']}"),
+            Text("Priority: ${claim['priority']}"),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Close"),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _updateClaimStatus(Map<String, dynamic> claim, String newStatus) {
+    setState(() {
+      claim['status'] = newStatus;
+
+      // 👇 auto-switch tab if claim no longer belongs in current tab
+      if (selectedTab != 'Active' && selectedTab != newStatus) {
+        selectedTab = newStatus;
+      }
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Claim ${claim['id']} marked as $newStatus")),
+    );
+  }
+
+  // ---- Dynamic stats (without thisMonth/average) ----
+  Map<String, dynamic> _calculateStats() {
+    int total = claims.length;
+    int pending = claims.where((c) => c['status'] == 'Pending').length;
+    int approved = claims.where((c) => c['status'] == 'Approved').length;
+    int denied = claims.where((c) => c['status'] == 'Denied').length;
+
+    return {
+      'total': total,
+      'pending': pending,
+      'approved': approved,
+      'denied': denied,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final filteredClaims = selectedTab == 'Active'
         ? claims
         : claims.where((claim) => claim['status'] == selectedTab).toList();
+
+    final stats = _calculateStats();
 
     return Scaffold(
       body: Padding(
@@ -98,6 +159,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -114,20 +176,22 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
             ),
             const SizedBox(height: 16),
 
+            // Stats row (only 4 now)
             SizedBox(
               height: 80,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _buildStatCard('Total Claims', '24', Colors.blue),
-                  _buildStatCard('Pending Review', '8', Colors.orange),
-                  _buildStatCard('This Month', '\R12,450', Colors.green),
-                  _buildStatCard('Average', '\R890', Colors.purple),
+                  _buildStatCard('Total Claims', stats['total'].toString(), Colors.blue),
+                  _buildStatCard('Pending Review', stats['pending'].toString(), Colors.orange),
+                  _buildStatCard('Approved', stats['approved'].toString(), Colors.green),
+                  _buildStatCard('Denied', stats['denied'].toString(), Colors.red),
                 ],
               ),
             ),
             const SizedBox(height: 16),
 
+            // Tabs
             SizedBox(
               height: 40,
               child: ListView.builder(
@@ -141,7 +205,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                     child: FilterChip(
                       label: Text(tab),
                       selected: isSelected,
-                      onSelected: (selected) {
+                      onSelected: (_) {
                         setState(() {
                           selectedTab = tab;
                         });
@@ -153,6 +217,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
             ),
             const SizedBox(height: 16),
 
+            // Claims list
             Expanded(
               child: ListView.builder(
                 itemCount: filteredClaims.length,
@@ -162,7 +227,8 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                     margin: const EdgeInsets.only(bottom: 12),
                     child: ExpansionTile(
                       leading: CircleAvatar(
-                        backgroundColor: _getPriorityColor(claim['priority']).withOpacity(0.1),
+                        backgroundColor:
+                        _getPriorityColor(claim['priority']).withOpacity(0.1),
                         child: Icon(
                           Icons.medical_services,
                           color: _getPriorityColor(claim['priority']),
@@ -212,7 +278,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                               ),
                               const Spacer(),
                               Text(
-                                claim['claimAmount'],
+                                "R${claim['claimAmount']}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -244,11 +310,13 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                                 ],
                               ),
                               const SizedBox(height: 16),
+
+                              // Action buttons
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () => _viewClaim(claim),
                                     icon: const Icon(Icons.visibility, size: 16),
                                     label: const Text('View'),
                                     style: ElevatedButton.styleFrom(
@@ -257,7 +325,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                                     ),
                                   ),
                                   ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () => _updateClaimStatus(claim, 'Approved'),
                                     icon: const Icon(Icons.check, size: 16),
                                     label: const Text('Approve'),
                                     style: ElevatedButton.styleFrom(
@@ -266,7 +334,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                                     ),
                                   ),
                                   ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () => _updateClaimStatus(claim, 'Denied'),
                                     icon: const Icon(Icons.close, size: 16),
                                     label: const Text('Deny'),
                                     style: ElevatedButton.styleFrom(
@@ -293,7 +361,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
 
   Widget _buildStatCard(String title, String value, Color color) {
     return Container(
-      width: 120,
+      width: 140,
       margin: const EdgeInsets.only(right: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(

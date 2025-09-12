@@ -10,7 +10,7 @@ class AppTheme {
   static const Color borderColor = Color(0xFFB3B3B3);
   static const Color mutedColor = Color(0xFF1A1A1A);
 
-  
+
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     colorScheme: const ColorScheme.light(
@@ -23,7 +23,7 @@ class AppTheme {
     ),
     textTheme: GoogleFonts.interTextTheme(),
     appBarTheme: const AppBarTheme(
-      backgroundColor: backgroundColor,
+      backgroundColor: cardColor,
       foregroundColor: primaryColor,
       elevation: 0,
       centerTitle: false,
@@ -52,7 +52,13 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Colors.white, // Set your desired color here
+      selectedItemColor: secondaryColor,
+      unselectedItemColor: mutedColor,
+    ),
   );
+
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
