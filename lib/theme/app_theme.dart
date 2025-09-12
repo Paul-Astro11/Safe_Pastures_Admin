@@ -10,7 +10,6 @@ class AppTheme {
   static const Color borderColor = Color(0xFFB3B3B3);
   static const Color mutedColor = Color(0xFF1A1A1A);
 
-
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     colorScheme: const ColorScheme.light(
@@ -53,12 +52,11 @@ class AppTheme {
       ),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.white, // Set your desired color here
+      backgroundColor: cardColor, // White background for light theme
       selectedItemColor: secondaryColor,
       unselectedItemColor: mutedColor,
     ),
   );
-
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
@@ -71,6 +69,16 @@ class AppTheme {
       onSurfaceVariant: Color(0xFFB3B3B3),
     ),
     textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF2A2A2A),
+      foregroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: false,
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Color(0xFF2A2A2A), // Dark background for dark theme
+      selectedItemColor: secondaryColor,
+      unselectedItemColor: Color(0xFFB3B3B3),
+    ),
   );
 }
-
